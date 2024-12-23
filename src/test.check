@@ -1,0 +1,510 @@
+#include <stdio.h>
+#include <string.h>
+
+#include "s21_string.h"
+
+
+#test strncpy_test_1_1
+char dest1[20];
+char dest2[20];
+
+ck_assert_str_eq(s21_strncpy(dest1, "Hello", 10), strncpy(dest2, "Hello", 10));
+ck_assert_str_eq(dest1, dest2);
+
+
+#test strncpy_test_1_3
+char dest1[20];
+char dest2[20];
+
+ck_assert_str_eq(s21_strncpy(dest1, "Hello\0World", 10), strncpy(dest2, "Hello\0World", 10));
+ck_assert_str_eq(dest1, dest2);
+
+
+#test strncpy_test_1_4
+char dest1[20];
+char dest2[20];
+ck_assert_str_eq(s21_strncpy(dest1, "", 10), strncpy(dest2, "", 10));
+ck_assert_str_eq(dest1, dest2);
+
+
+
+#test strncpy_test_1_5
+char dest1[20] = {0};
+char dest2[20] = {0};
+
+ck_assert_str_eq(s21_strncpy(dest1, "Test", 10), strncpy(dest2, "Test", 10));
+ck_assert_str_eq(dest1, dest2);
+
+
+#test strcspn_test
+ck_assert_int_eq(s21_strcspn("xyzbxz", "abc"), strcspn("xyzbxz", "abc")); 
+ck_assert_int_eq(s21_strcspn("xyzbxz", "xyz"), strcspn("xyzbxz", "xyz"));
+ck_assert_int_eq(s21_strcspn("xyzbxz", "no match"), strcspn("xyzbxz", "no match")); 
+ck_assert_int_eq(s21_strcspn("xyzbxz", ""), strcspn("xyzbxz", "")); 
+ck_assert_int_eq(s21_strcspn("", "abc"), strcspn("", "abc")); 
+ck_assert_int_eq(s21_strcspn("", ""), strcspn("", "")); 
+#test strncat_hello5
+char* str2 = "hello";
+char dest[20] = "lalal";
+int n = 5;
+ck_assert_str_eq(strncat(dest, str2, n), s21_strncat(dest, str2, n));
+
+#test strncat_hello_world_3
+char dest[20] = "Hello, ";
+char src[] = "World!";
+ck_assert_str_eq(strncat(dest, src, 3), s21_strncat(dest, src, 3));
+
+#test strncat_hello_world_6
+char dest[20] = "Hello, ";
+char src[] = "World!";
+ck_assert_str_eq(strncat(dest, src, 6), s21_strncat(dest, src, 6));
+
+
+#test strncat_hello_world_10
+char dest[20] = "Hello, ";
+char src[] = "World!";
+ck_assert_str_eq(strncat(dest, src, 10), s21_strncat(dest, src, 10));
+
+
+#test strncat_empt_src
+char dest[20] = "Hello, ";
+ck_assert_str_eq(strncat(dest, "", 5), s21_strncat(dest, "", 5));
+
+
+#test strncat_empt_dest
+char dest[20] = "";
+char src[] = "World!";
+ck_assert_str_eq(strncat(dest, src, 6), s21_strncat(dest, src, 6));
+
+
+#test strchr_test
+char* string = "hello world";
+char* string2 = "";
+int ch = (int)'h';
+int ch2 = (int)'\0';
+ck_assert_ptr_eq(string, s21_strchr(string, ch));
+ck_assert_ptr_eq(strchr(string2, ch), s21_strchr(string2, ch));
+ck_assert_ptr_eq(strchr(string, ch2), s21_strchr(string, ch2));
+
+
+#test strncmp_test_abc_abcde_3
+char* abc = "abc";
+char* abcde = "abcde";
+ck_assert_int_eq(strncmp(abc, abcde, 3), s21_strncmp(abc, abcde, 3));
+
+#test strncmp_test_empt_empt_0
+char* empt = "";
+ck_assert_int_eq(strncmp(empt, empt, 0), s21_strncmp(empt, empt, 0));
+
+#test strncmp_test_empt_hello_5
+char* empt = "";
+char* hello = "hello";
+ck_assert_int_ge(strncmp(empt, hello, 5), s21_strncmp(empt, hello, 5));
+
+#test hello_empt_3
+char* empt = "";
+char* hello = "hello";
+ck_assert_int_le(strncmp(hello, empt, 3), s21_strncmp(hello, empt, 3));
+
+
+#test strncmp_test_abc_abd_3
+char* abc = "abc";
+char* abd = "abd";
+ck_assert_int_ge(strncmp(abc, abd, 3), s21_strncmp(abc, abd, 3));
+
+#test strncmp_test_hello_hellocopter_5
+char* hello = "hello";
+char* hellocopter = "hellocopter";
+ck_assert_int_eq(strncmp(hello, hellocopter, 5), s21_strncmp(hello, hellocopter, 5));
+
+
+#test hello_world_5
+char* hello = "hello";
+char* world = "world";
+ck_assert_int_ge(strncmp(hello, world, 5), s21_strncmp(hello, world, 5));
+
+#test strncmp_test_hello_helloworld_5
+char* hello = "hello";
+char* hello_world = "hello world";
+ck_assert_int_eq(strncmp(hello, hello_world, 5), s21_strncmp(hello, hello_world, 5));
+
+#test strncmp_test_uphello_hello_5
+char* hello = "hello";
+char* up_hello = "Hello";
+ck_assert_int_ge(strncmp(up_hello, hello, 5), s21_strncmp(up_hello, hello, 5));
+
+
+#test strncmp_test_hello_hellocopter_7
+char* hello = "hello";
+char* hellocopter = "hellocopter";
+ck_assert_int_ge(strncmp(hello, hellocopter, 7), s21_strncmp(hello, hellocopter, 7));
+
+
+#test memchr_first_char
+char* string = "hello world";
+char ch = 'h';
+ck_assert_ptr_eq(string, s21_memchr(string, ch, 10));
+
+#test memchr_o_char
+char* string = "hello world";
+char ch = 'o';
+ck_assert_ptr_eq(memchr(string, ch, 10), s21_memchr(string, ch, 10));
+
+#test memchr_space_char
+char* string = "hello world ";
+char ch = ' ';
+ck_assert_ptr_eq(memchr(string, ch, 10), s21_memchr(string, ch, 10));
+
+#test memchr_non_existing_char
+char* string = "hello world ";
+char ch = 's';
+ck_assert_ptr_eq(memchr(string, ch, 10), s21_memchr(string, ch, 10));
+
+#test memchr_out_of_range_char
+char* string = "hello world ";
+char ch = 'd';
+ck_assert_ptr_eq(memchr(string, ch, 5), s21_memchr(string, ch, 5));
+
+
+#test memcpy_hello
+char* str1 = "hello";
+char* str2[20];
+int n = strlen(str1) + 1;
+ck_assert_int_eq(s21_memcmp(s21_memcpy(str2, str1, n), str1, n), 0);
+
+#test memcpy_hell
+char* str1 = "hell";
+char* str2[20];
+int n = strlen(str1) + 1;
+ck_assert_int_eq(s21_memcmp(s21_memcpy(str2, str1, n), str1, n), 0);
+
+#test memcpy_haloo
+char* str1 = "haloo";
+char* str2[20];
+int n = strlen(str1) + 1;
+ck_assert_int_eq(s21_memcmp(s21_memcpy(str2, str1, n), str1, n), 0);
+
+#test memcpy_s21_0
+char* str1 = "s21_0";
+char* str2[20];
+int n = strlen(str1) + 1;
+ck_assert_int_eq(s21_memcmp(s21_memcpy(str2, str1, n), str1, n), 0);
+
+#test memcpy_abc
+char* str1 = "abc";
+char* str2[20];
+int n = strlen(str1) + 1;
+ck_assert_int_eq(s21_memcmp(s21_memcpy(str2, str1, n), str1, n), 0);
+
+#test memcpy_0qwert
+char* str1 = "0qwert";
+char* str2[20];
+int n = strlen(str1) + 1;
+ck_assert_int_eq(s21_memcmp(s21_memcpy(str2, str1, n), str1, n), 0);
+
+#test memset_c0
+char ch = 'c';
+char* arr[20];
+int n = 0;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memset_c3
+char ch = 'c';
+char* arr[20];
+int n = 3;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memset_c20
+char ch = 'c';
+char* arr[20];
+int n = 20;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memset_C0
+char ch = 'C';
+char* arr[20];
+int n = 0;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memset_C3
+char ch = 'C';
+char* arr[20];
+int n = 3;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memset_C20
+char ch = 'C';
+char* arr[20];
+int n = 20;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memset_00
+char ch = '0';
+char* arr[20];
+int n = 0;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memset_03
+char ch = '0';
+char* arr[20];
+int n = 3;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memset_020
+char ch = '0';
+char* arr[20];
+int n = 20;
+ck_assert_int_eq(s21_memcmp(s21_memset(arr, ch, n), memset(arr, ch, n), n), 0);
+
+#test memcmp_hello_hello
+
+char* str1 = "hello";
+char* str2 = "hello";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hello_hell
+
+char* str1 = "hello";
+char* str2 = "hell";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hello_haloo
+
+char* str1 = "hello";
+char* str2 = "haloo";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hello_s21_0
+
+char* str1 = "hello";
+char* str2 = "s21_0";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hello_abc
+
+char* str1 = "hello";
+char* str2 = "abc";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hello_0qwert
+
+char* str1 = "hello";
+char* str2 = "0qwert";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hell_hello
+
+char* str1 = "hell";
+char* str2 = "hello";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hell_hell
+
+char* str1 = "hell";
+char* str2 = "hell";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hell_haloo
+
+char* str1 = "hell";
+char* str2 = "haloo";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hell_s21_0
+
+char* str1 = "hell";
+char* str2 = "s21_0";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hell_abc
+
+char* str1 = "hell";
+char* str2 = "abc";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_hell_0qwert
+
+char* str1 = "hell";
+char* str2 = "0qwert";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_haloo_hello
+
+char* str1 = "haloo";
+char* str2 = "hello";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_haloo_hell
+
+char* str1 = "haloo";
+char* str2 = "hell";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_haloo_haloo
+
+char* str1 = "haloo";
+char* str2 = "haloo";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_haloo_s21_0
+
+char* str1 = "haloo";
+char* str2 = "s21_0";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_haloo_abc
+
+char* str1 = "haloo";
+char* str2 = "abc";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_haloo_0qwert
+
+char* str1 = "haloo";
+char* str2 = "0qwert";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_s21_0_hello
+
+char* str1 = "s21_0";
+char* str2 = "hello";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_s21_0_hell
+
+char* str1 = "s21_0";
+char* str2 = "hell";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_s21_0_haloo
+
+char* str1 = "s21_0";
+char* str2 = "haloo";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_s21_0_s21_0
+
+char* str1 = "s21_0";
+char* str2 = "s21_0";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_s21_0_abc
+
+char* str1 = "s21_0";
+char* str2 = "abc";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_s21_0_0qwert
+
+char* str1 = "s21_0";
+char* str2 = "0qwert";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_abc_hello
+
+char* str1 = "abc";
+char* str2 = "hello";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_abc_hell
+
+char* str1 = "abc";
+char* str2 = "hell";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_abc_haloo
+
+char* str1 = "abc";
+char* str2 = "haloo";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_abc_s21_0
+
+char* str1 = "abc";
+char* str2 = "s21_0";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_abc_abc
+
+char* str1 = "abc";
+char* str2 = "abc";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_abc_0qwert
+
+char* str1 = "abc";
+char* str2 = "0qwert";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_0qwert_hello
+
+char* str1 = "0qwert";
+char* str2 = "hello";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_0qwert_hell
+
+char* str1 = "0qwert";
+char* str2 = "hell";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_0qwert_haloo
+
+char* str1 = "0qwert";
+char* str2 = "haloo";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_0qwert_s21_0
+
+char* str1 = "0qwert";
+char* str2 = "s21_0";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_0qwert_abc
+
+char* str1 = "0qwert";
+char* str2 = "abc";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
+#test memcmp_0qwert_0qwert
+
+char* str1 = "0qwert";
+char* str2 = "0qwert";
+int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
+ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
+
