@@ -4,6 +4,57 @@
 #include "s21_string.h"
 
 
+
+#test test_s21_strlen
+ck_assert_int_eq(s21_strlen("Hello"), strlen("Hello"));
+ck_assert_int_eq(s21_strlen(""), strlen(""));
+
+
+#test test_s21_strpbrk
+ck_assert_str_eq(s21_strpbrk("Hello, World!", "W"), strpbrk("Hello, World!", "W"));
+ck_assert_ptr_eq(s21_strpbrk("Hello, World!", "x"), strpbrk("Hello, World!", "x"));
+
+
+
+
+
+#test test_s21_strstr
+ck_assert_str_eq(\
+                s21_strstr("Hello, World!", "World"), \
+                strstr("Hello, World!", "World") \
+                );
+ck_assert_ptr_eq(s21_strstr("Hello, World!", "x"), strstr("Hello, World!", "x"));
+
+
+#test test_s21_strchr
+ck_assert_str_eq(s21_strchr("Hello, World!", 'W'), strchr("Hello, World!", 'W'));
+ck_assert_ptr_eq(s21_strchr("Hello, World!", 'x'), strchr("Hello, World!", 'x'));
+
+
+#test test_s21_strtok
+char str[] = "Hello, World!";
+char *token = s21_strtok(str, " ,!");
+char *token2 = strtok(str, " ,!");
+ck_assert_str_eq(token, token2);
+token = s21_strtok(s21_NULL, " ,!");
+ck_assert_str_eq(token, "World");
+token = s21_strtok(s21_NULL, " ,!");
+ck_assert_ptr_eq(token, s21_NULL);
+
+
+#test test_s21_strtok_null
+const char *delim = " ,.!?";
+char *token;
+token = s21_strtok(s21_NULL, delim);
+ck_assert_ptr_eq(token, s21_NULL);
+
+
+
+#test test_s21_strerror
+ck_assert_str_eq(s21_strerror(0), "Error 0");
+ck_assert_str_eq(s21_strerror(1), "Operation not permitted");
+ck_assert_str_eq(s21_strerror(100), "Operation not supported on socket");
+
 #test strncpy_test_1_1
 char dest1[20];
 char dest2[20];
@@ -508,3 +559,8 @@ char* str2 = "0qwert";
 int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
 ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
 
+
+#test test_s21_strrchr   
+ck_assert_str_eq(s21_strrchr("Hello, World!", 'o'), strrchr("Hello, World!", 'o'));
+ck_assert_ptr_eq(s21_strrchr("Hello, World!", 'x'), strrchr("Hello, World!", 'x'));
+ck_assert_ptr_eq(s21_strrchr(s21_NULL, 'W'), s21_NULL);
