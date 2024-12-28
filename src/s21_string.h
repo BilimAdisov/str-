@@ -2,22 +2,10 @@
 #define S21_STRING_H
 
 #define s21_size_t unsigned long long
-#define s21_NULL (void *)0
-#include <math.h>
-#include <stdarg.h>
-#include <stdio.h>
+#define s21_NULL (void*)0
 #include <stdlib.h>
+#include <stdio.h>
 
-
-typedef struct {
-  int space;
-  int sign;
-  int left_align;
-  int width;
-  int precision;
-  int var_length;
-  int size;
-} Settings;
 
 void* s21_memchr(const void *str, int c, s21_size_t n);
 int s21_memcmp(const void *str1, const void *str2, s21_size_t n);
@@ -34,5 +22,7 @@ char *s21_strpbrk(const char *str1, const char *str2);
 char *s21_strrchr(const char *str, int symbol);
 char *s21_strstr(const char *haystack, const char *needle);
 char *s21_strtok(char *str, const char *delim);
+
+int s21_sprintf(char *str, const  char *format, ...);
 
 #endif

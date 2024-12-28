@@ -1,6 +1,6 @@
 OPT = -fprofile-arcs -ftest-coverage -g
-C_FILES = s21_string.c 
-O_FILES = s21_string.o 
+C_FILES = s21_string.c s21_sprintf.c
+O_FILES = s21_string.o s21_sprintf.o
 CCFLAGS = -Wall -Werror -Wextra -std=c11
 
 SHELLNAME:=$(shell uname)

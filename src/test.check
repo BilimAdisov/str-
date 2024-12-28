@@ -3,8 +3,6 @@
 
 #include "s21_string.h"
 
-
-
 #test test_s21_strlen
 ck_assert_int_eq(s21_strlen("Hello"), strlen("Hello"));
 ck_assert_int_eq(s21_strlen(""), strlen(""));
@@ -54,6 +52,7 @@ ck_assert_ptr_eq(token, s21_NULL);
 ck_assert_str_eq(s21_strerror(0), "Error 0");
 ck_assert_str_eq(s21_strerror(1), "Operation not permitted");
 ck_assert_str_eq(s21_strerror(100), "Operation not supported on socket");
+
 
 #test strncpy_test_1_1
 char dest1[20];
@@ -559,6 +558,436 @@ char* str2 = "0qwert";
 int n = (strlen(str1) > strlen(str2) ? strlen(str1) : strlen(str1));
 ck_assert_int_eq(memcmp(str1, str2, n), s21_memcmp(str1, str2, n));
 
+
+#test sprintf_d_width
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%7d %lf %s %u, %c", 17, 123.5565655, "Hello", 55555, 'b');
+s21_sprintf(str_two, "%7d %lf %s %u, %c", 17, 123.5565655, "Hello", 55555,'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test print122
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.7d", -42);
+s21_sprintf(str_two, "%.7d", -42);
+ck_assert_str_eq(str_one, str_two);
+
+#test print222
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.7d", -42856);
+s21_sprintf(str_two, "%.7d", -42856);
+ck_assert_str_eq(str_one, str_two);
+
+#test print322
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-.5hd", -42);
+s21_sprintf(str_two, "%-.5hd", -42);
+ck_assert_str_eq(str_one, str_two);
+
+#test print422
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.5d", -42);
+s21_sprintf(str_two, "%.5d", -42);
+ck_assert_str_eq(str_one, str_two);
+
+#test print522
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.5s %c", "-42", 'g');
+s21_sprintf(str_two, "%.5s %c", "-42", 'g');
+ck_assert_str_eq(str_one, str_two);
+
+#test print622
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%s %c %d", "-42", 'g', 34);
+s21_sprintf(str_two, "%s %c %d", "-42", 'g', 34);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf1
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%d %s %u, %c", 123, "Hello", 55555, 'b');
+s21_sprintf(str_two, "%d %s %u, %c", 123,  "Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf2
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%d %f %s %u, %c", 123, 123.5565655, "Hello", 55555, 'b');
+s21_sprintf(str_two, "%d %lf %s %u, %c", 123, 123.5565655, "Hello", 55555,'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf3
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%5d %5f %5s %5u, %5c", 123, 123.523455, "Hello", 55555,
+        'b');
+s21_sprintf(str_two, "%5d %5f %5s %5u, %5c", 123, 123.523455, "Hello",
+            55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf4
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.5d %.5f %.5s %.5u, %c", 123, 123.523455, "Hello",
+        55555, 'b');
+s21_sprintf(str_two, "%.5d %.5f %.5s %.5u, %c", 123, 123.523455, "Hello",
+            55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf5
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%ld %lf %s %lu, %lc", 12311111111, 123.523455, "hello©",
+        12311111111, 'b');
+s21_sprintf(str_two, "%ld %lf %s %lu, %lc", 12311111111, 123.523455, "hello©",
+            12311111111, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf6
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%hd %f %s %hu, %c", 32000, 123.523455, "hello©", 33333,
+        'b');
+s21_sprintf(str_two, "%hd %f %s %hu, %c", 32000, 123.523455, "hello©", 33333,
+            'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf7
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%hd %f %s %hu, %c", 32000, 12.345699, "hello©", 33333, 'b');
+s21_sprintf(str_two, "%hd %f %s %hu, %c", 32000, 12.345699, "hello©", 33333,
+            'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf8
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%hd %f %s %hu, %c", 32000, 12.345699, "hello©", 33333, 'b');
+s21_sprintf(str_two, "%hd %f %s %hu, %c", 32000, 12.345699, "hello©", 33333,
+            'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf9
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%hd %f %s %hu, %c", 0, 0.0, "hello©", 0, 0);
+s21_sprintf(str_two, "%hd %f %s %hu, %c", 0, 0.0, "hello©", 0, 0);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf10
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%+d %+f %s %u, %c", 123, 123.5565555, "Hello", 55555, 'b');
+s21_sprintf(str_two, "%+d %+f %s %u, %c", 123, 123.5565555, "Hello", 55555,
+            'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf11
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-d %-f %-s %-u, %-c", 123, 123.5565555, "Hello", 55555,'b');
+s21_sprintf(str_two, "%-d %-f %-s %-u, %-c", 123, 123.5565555, "Hello", 55555,'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf12
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "% d % f %s %u, %c", 123, 123.5565555, "Hello", 55555, 'b');
+s21_sprintf(str_two, "% d % f %s %u, %c", 123, 123.5565555, "Hello", 55555,'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf13
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-9d %-9f %-9s %-9u, %-9c", 123, 123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%-9d %-9f %-9s %-9u, %-9c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf14
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "% 8d % 8f %s %u, %c", 123, 123.5565555, "Hello", 55555,'b');
+s21_sprintf(str_two, "% 8d % 8f %s %u, %c", 123, 123.5565555, "Hello",55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf15
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "% 9d % 9f %s %u, %c", 123, 123.5565555, "Hello", 55555,'b');
+s21_sprintf(str_two, "% 9d % 9f %s %u, %c", 123, 123.5565555, "Hello",55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf16
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "% 8d % 8f %s %u, %c", -123, -123.5565555, "Hello", 55555,'b');
+s21_sprintf(str_two, "% 8d % 8f %s %u, %c", -123, -123.5565555, "Hello",55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf17
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%+9d %+9f %s %u, %c", -123, -123.5565555, "Hello", 55555,'b');
+s21_sprintf(str_two, "%+9d %+9f %s %u, %c", -123, -123.5565555, "Hello",55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf18
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-6d %-6f %s %u, %c", -123, -123.5565555, "Hello", 55555,'b');
+s21_sprintf(str_two, "%-6d %-6f %s %u, %c", -123, -123.5565555, "Hello",55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf19
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%8.8d %8.8f %s %u, %c", -123, -123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%8.8d %8.8f %s %u, %c", -123, -123.5565555, "Hello",55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf20
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%8.8d %8.8f %s %8.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%8.8d %8.8f %s %8.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf21
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%7.8d %7.8f %s %7.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%7.8d %7.8f %s %7.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf22
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%5.8d %5.8f %s %5.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%5.8d %5.8f %s %5.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf23
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%9.8d %9.8f %s %9.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%9.8d %9.8f %s %9.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf24
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-5.8d %-5.8f %s %-5.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%-5.8d %-5.8f %s %-5.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf25
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%+9.8d %+9.8f %s %9.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%+9.8d %+9.8f %s %9.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf26
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%+9.8d %+9.8f %s %9.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%+9.8d %+9.8f %s %9.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf27
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "% 8.8d % 8.8f %s %9.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "% 8.8d % 8.8f %s %9.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf28
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%9.8d %9.8f %s %9.8u, %c", -123, -123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%9.8d %9.8f %s %9.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf29
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-9.8d %-9.8f %s %-9.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%-9.8d %-9.8f %s %-9.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf30
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-9.8d %-9.8f %s %-9.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%-9.8d %-9.8f %s %-9.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf31
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%+9.8d %+9.8f %s %9.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%+9.8d %+9.8f %s %9.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf32
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "% 9.8d % 9.8f %s %9.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "% 9.8d % 9.8f %s %9.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf33
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%8.8d %8.8f %s %8.8u, %c", -123, -123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%8.8d %8.8f %s %8.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf34
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-8.8d %-8.8f %s %-8.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+s21_sprintf(str_two, "%-8.8d %-8.8f %s %-8.8u, %c", -123, -123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf35
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-8.8d %-8.8f %s %-8.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%-8.8d %-8.8f %s %-8.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf36
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%8.8d %8.8f %s %8.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%8.8d %8.8f %s %8.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf37
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%+8.8d %+8.8f %s %8.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "%+8.8d %+8.8f %s %8.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf38
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "% 8.8d % 8.8f %s %8.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+s21_sprintf(str_two, "% 8.8d % 8.8f %s %8.8u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf39
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%8.8d %.f %s %8.8u, %c", 123, 123.5565555, "Hello", 55555,'b');
+s21_sprintf(str_two, "%8.8d %.f %s %8.8u, %c", 123, 123.5565555, "Hello",55555, 'b');
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf40
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.8f", 123.999999999);
+s21_sprintf(str_two, "%.8f", 123.999999999);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf41
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.6f", 123.999999999);
+s21_sprintf(str_two, "%.6f", 123.999999999);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf42
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.2f", 123.999999999);
+s21_sprintf(str_two, "%.2f", 123.999999999);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf43
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.f", 123.999999999);
+s21_sprintf(str_two, "%.f", 123.999999999);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf44
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.f", 123.5555555);
+s21_sprintf(str_two, "%.f", 123.5555555);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf45
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.f", 123.6666666);
+s21_sprintf(str_two, "%.f", 123.6666666);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf46
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%.f", 123.4564654);
+s21_sprintf(str_two, "%.f", 123.4564654);
+ck_assert_str_eq(str_one, str_two);
+
+
+#test sprintf48
+char str_one[100] = "";
+char str_two[100] = "";
+int a = sprintf(str_one, "% 9d % 9f %s %u, %c", 123, 123.5565555, "Hello",55555, 'b');
+int b = s21_sprintf(str_two, "% 9d % 9f %s %u, %c", 123, 123.5565555,"Hello", 55555, 'b');
+ck_assert_int_eq(a, b);
+
+#test sprintf49
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%%");
+s21_sprintf(str_two, "%%");
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf50
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%9.2f", 12.345);
+s21_sprintf(str_two, "%9.2f", 12.345);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf53
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-9f", 1.345);
+s21_sprintf(str_two, "%-9f", 1.345);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf51
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "v 9.2 hello");
+s21_sprintf(str_two, "v 9.2 hello");
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf55
+char str_one[100] = "";
+char str_two[100] = "";
+sprintf(str_one, "%-*d", -3, 34);
+s21_sprintf(str_two, "%-*d", -3, 34);
+ck_assert_str_eq(str_one, str_two);
+
+#test sprintf56
+char str_two[100] = "";
+s21_sprintf(str_two, "%hy", -3, 34);
+ck_assert_str_eq("", str_two);
 
 #test test_s21_strrchr   
 ck_assert_str_eq(s21_strrchr("Hello, World!", 'o'), strrchr("Hello, World!", 'o'));
