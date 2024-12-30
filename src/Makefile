@@ -40,7 +40,7 @@ clean:
 	rm -rf valgrind_output.log
 
 style:
-	clang-format -style=file --assume-filename=..\materials\linters\.clang-format -i *.c *.h
+	clang-format -style=Google -i *.c *.h
 
 valgrind-check:
 	valgrind --log-file=valgrind_output.log --tool=memcheck --leak-check=yes ./a.out 
