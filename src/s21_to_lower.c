@@ -1,7 +1,7 @@
 #include "s21_string.h"
 
 void *s21_to_lower(const char *str) {
-  char *new_str = NULL;
+  char *new_str = s21_NULL;
 
   if (str != s21_NULL) {
     int size = s21_strlen(str);
