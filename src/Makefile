@@ -29,9 +29,6 @@ gcov_report: clean test.c
 	lcov -t "coverage_report" -o coverage.info -c -d .
 	genhtml -o report coverage.info
 
-test.c: test.check
-	checkmk clean_mode=1 test.check > test.c
-
 clean:
 	rm -rf *.o *.gch *.out *.gcno *.gcda *.info *.gcov *.a
 	rm -rf report/

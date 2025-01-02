@@ -1,9 +1,10 @@
 #ifndef S21_SPRINTF_H
 #define S21_SPRINTF_H
 
-#define s21_size_t unsigned long long
 #include <math.h>
 #include <stdarg.h>
+
+#include "s21_string.h"
 
 typedef struct {
   int space;

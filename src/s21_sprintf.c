@@ -1,7 +1,5 @@
 #include "s21_sprintf.h"
 
-#include "s21_string.h"
-
 int s21_sprintf(char* str, const char* format, ...) {
   char* format_copy = (char*)format;
   char* specifiers = "cdfsu%";
