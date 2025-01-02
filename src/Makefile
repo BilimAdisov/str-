@@ -1,6 +1,6 @@
 OPT = -fprofile-arcs -ftest-coverage -g
-C_FILES = s21_string.c s21_sprintf.c
-O_FILES = s21_string.o s21_sprintf.o
+C_FILES = s21_string.c s21_sprintf.c s21_insert.c s21_to_lower.c s21_to_upper.c s21_trim.c
+O_FILES = s21_string.o s21_sprintf.o s21_insert.o s21_to_lower.o s21_to_upper.o s21_trim.o
 CCFLAGS = -Wall -Werror -Wextra -std=c11
 
 SHELLNAME:=$(shell uname)
@@ -36,11 +36,10 @@ clean:
 	rm -rf *.o *.gch *.out *.gcno *.gcda *.info *.gcov *.a
 	rm -rf report/
 	rm -rf temp/
-	rm -rf test.c
 	rm -rf valgrind_output.log
 
 style:
 	clang-format -style=Google -i *.c *.h
 
 valgrind-check:
-	valgrind --log-file=valgrind_output.log --tool=memcheck --leak-check=yes ./a.out 
+	valgrind --log-file=valgrind_output.log --tool=memcheck --leak-check=yes --track-origins=yes ./a.out 
